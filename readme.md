@@ -2,6 +2,8 @@
 
 This is an EDH/Commander life counter application for the Arduboy. 
 
+**THIS ISN'T DONE YET**
+
 
 ## How to Use
 
