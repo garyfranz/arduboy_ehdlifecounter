@@ -373,7 +373,7 @@ void up() {
       break;
       
     case ENTRYSELECTION :
-      if (playerValues[selectionPlayer][selectionValue] = 999) {
+      if (playerValues[selectionPlayer][selectionValue] == 999) {
         playerValues[selectionPlayer][selectionValue] = 999;
       } else {
         playerValues[selectionPlayer][selectionValue]++;
@@ -443,6 +443,8 @@ void left() {
         selectionPlayer = SEL_PLAYER6;
       } else if (selectionPlayer == SEL_PLAYER8) {
         selectionPlayer = SEL_PLAYER7;
+      } else if (selectionPlayer == SEL_PLAYER1) {
+        selectionPlayer = SEL_PLAYER8;
       }
 
       break;
@@ -493,6 +495,8 @@ void right() {
         selectionPlayer = SEL_PLAYER7;
       } else if (selectionPlayer == SEL_PLAYER7) {
         selectionPlayer = SEL_PLAYER8;
+      } else if (selectionPlayer == SEL_PLAYER8) {
+        selectionPlayer = SEL_PLAYER1;
       }
 
       break;
