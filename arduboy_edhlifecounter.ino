@@ -14,6 +14,7 @@
 //app states
 static const unsigned int PLAYERSELECTION PROGMEM = 0;
 static const unsigned int VALUESELECTION PROGMEM = 1;
+static const unsigned int ENTRYSELECTION PROGMEM = 2;
 
 //screen selections
 static const unsigned int SEL_PLAYER1 PROGMEM = 0;
@@ -25,16 +26,16 @@ static const unsigned int SEL_PLAYER6 PROGMEM = 5;
 static const unsigned int SEL_PLAYER7 PROGMEM = 6;
 static const unsigned int SEL_PLAYER8 PROGMEM = 7;
 
-static const unsigned int SEL_LIFE PROGMEM = 10;
-static const unsigned int SEL_POISON PROGMEM = 11;
-static const unsigned int SEL_COMMANDER1 PROGMEM = 12;
-static const unsigned int SEL_COMMANDER2 PROGMEM = 13;
-static const unsigned int SEL_COMMANDER3 PROGMEM = 14;
-static const unsigned int SEL_COMMANDER4 PROGMEM = 15;
-static const unsigned int SEL_COMMANDER5 PROGMEM = 16;
-static const unsigned int SEL_COMMANDER6 PROGMEM = 17;
-static const unsigned int SEL_COMMANDER7 PROGMEM = 18;
-static const unsigned int SEL_COMMANDER8 PROGMEM = 19;
+static const unsigned int SEL_LIFE PROGMEM = 8;
+static const unsigned int SEL_POISON PROGMEM = 9;
+static const unsigned int SEL_COMMANDER1 PROGMEM = 0;
+static const unsigned int SEL_COMMANDER2 PROGMEM = 1;
+static const unsigned int SEL_COMMANDER3 PROGMEM = 2;
+static const unsigned int SEL_COMMANDER4 PROGMEM = 3;
+static const unsigned int SEL_COMMANDER5 PROGMEM = 4;
+static const unsigned int SEL_COMMANDER6 PROGMEM = 5;
+static const unsigned int SEL_COMMANDER7 PROGMEM = 6;
+static const unsigned int SEL_COMMANDER8 PROGMEM = 7;
 
 Arduboy2 arduboy;
 
@@ -73,14 +74,27 @@ void reset() {
     for (char h = 0; h < 8; h++) {
       playerValues[w][h] = 0; //commander damage
     }
-    playerValues[w][8] = 40; //life
-    playerValues[w][9] = 0; //poison
+    playerValues[w][SEL_LIFE] = 40; //life
+    playerValues[w][SEL_POISON] = 0; //poison
   }
 
 }
 
 void draw() {
 
+  //21x8 characters
+  //=======================
+  //= P1 P2 P3 P4 P5 P6 P7 P8  =
+  //=    =
+  //=---------------------=
+  //= Life-040  Poison-00 =
+  //= Comm1-40  Comm2-40  =
+  //= Comm3-40  Comm4-40  =
+  //= Comm5-40  Comm6-40  =
+  //= Comm7-40  Comm8-40  =
+  //=======================
+
+  
   //21x8 characters
   //=======================
   //=  P1   P2   P3   P4  =
@@ -94,102 +108,101 @@ void draw() {
   //=======================
 
   //always draw top selection area
-  arduboy.setCursor(12, 2); //2
+  arduboy.setCursor(2, 2); 
   arduboy.print("P1");
 
-  arduboy.setCursor(42, 2); //7
+  arduboy.setCursor(18, 2);
   arduboy.print("P2");
 
-  arduboy.setCursor(72, 2); //12
+  arduboy.setCursor(34, 2); 
   arduboy.print("P3");
 
-  arduboy.setCursor(102, 2); //17
+  arduboy.setCursor(50, 2);
   arduboy.print("P4");
 
-  arduboy.setCursor(12, 10); //2
+  arduboy.setCursor(66, 2); 
   arduboy.print("P5");
 
-  arduboy.setCursor(42, 10); //7
+  arduboy.setCursor(82, 2); 
   arduboy.print("P6");
 
-  arduboy.setCursor(72, 10); //12
+  arduboy.setCursor(98, 2); 
   arduboy.print("P7");
 
-  arduboy.setCursor(102, 10); //17
+  arduboy.setCursor(114, 2);
   arduboy.print("P8");
 
-  arduboy.drawRect(0, 0, 128, 64, WHITE);
-  arduboy.drawLine(0, 18, 128, 18, WHITE);
-  arduboy.drawLine(0, 28, 128, 28, WHITE);
+  //arduboy.drawRect(0, 0, 128, 64, WHITE);
+  arduboy.drawLine(0, 10, 128, 10, WHITE);
+  //arduboy.drawLine(0, 28, 128, 28, WHITE);
   
   switch (selectionPlayer) {
     case SEL_PLAYER1 :
-      arduboy.setCursor(6, 2);
+      arduboy.drawRect(0, 0, 15, 11, WHITE);
       break;
     case SEL_PLAYER2 :
-      arduboy.setCursor(36, 2);
+      arduboy.drawRect(16, 0, 15, 11, WHITE);
       break;
     case SEL_PLAYER3 :
-      arduboy.setCursor(66, 2);
+      arduboy.drawRect(32, 0, 15, 11, WHITE);
       break;
     case SEL_PLAYER4 :
-      arduboy.setCursor(96, 2);
+      arduboy.drawRect(48, 0, 15, 11, WHITE);
       break;
     case SEL_PLAYER5 :
-      arduboy.setCursor(6, 10);
+      arduboy.drawRect(64, 0, 15, 11, WHITE);
       break;
     case SEL_PLAYER6 :
-      arduboy.setCursor(36, 10);
+      arduboy.drawRect(80, 0, 15, 11, WHITE);
       break;
     case SEL_PLAYER7 :
-      arduboy.setCursor(66, 10);
+      arduboy.drawRect(96, 0, 15, 11, WHITE);
       break;
     case SEL_PLAYER8 :
-      arduboy.setCursor(96, 10);
+      arduboy.drawRect(112, 0, 15, 11, WHITE);
       break;
   } //state
-  arduboy.print(">");
 
 
-  arduboy.setCursor(12, 20);
+  arduboy.setCursor(12, 14);
   arduboy.print("Life-");
-  arduboy.print(playerValues[selectionPlayer][8]);
+  arduboy.print(playerValues[selectionPlayer][SEL_LIFE]);
 
-  arduboy.setCursor(72, 20);
+  arduboy.setCursor(72, 14);
   arduboy.print("Poison-");
-  arduboy.print(playerValues[selectionPlayer][9]);
+  arduboy.print(playerValues[selectionPlayer][SEL_POISON]);
 
-  arduboy.setCursor(12, 30);
+  arduboy.setCursor(12, 24);
   arduboy.print("Cmdr1-");
-  arduboy.print(playerValues[selectionPlayer][0]);
+  arduboy.print(playerValues[selectionPlayer][SEL_COMMANDER1]);
 
-  arduboy.setCursor(72, 30);
+  arduboy.setCursor(72, 24);
   arduboy.print("Cmdr2-");
-  arduboy.print(playerValues[selectionPlayer][1]);
+  arduboy.print(playerValues[selectionPlayer][SEL_COMMANDER2]);
 
-  arduboy.setCursor(12, 38);
+  arduboy.setCursor(12, 34);
   arduboy.print("Cmdr3-");
-  arduboy.print(playerValues[selectionPlayer][2]);
+  arduboy.print(playerValues[selectionPlayer][SEL_COMMANDER3]);
 
-  arduboy.setCursor(72, 38);
+  arduboy.setCursor(72, 34);
   arduboy.print("Cmdr4-");
-  arduboy.print(playerValues[selectionPlayer][3]);
+  arduboy.print(playerValues[selectionPlayer][SEL_COMMANDER4]);
 
-  arduboy.setCursor(12, 46);
+  arduboy.setCursor(12, 44);
   arduboy.print("Cmdr5-");
-  arduboy.print(playerValues[selectionPlayer][4]);
+  arduboy.print(playerValues[selectionPlayer][SEL_COMMANDER5]);
 
-  arduboy.setCursor(72, 46);
+  arduboy.setCursor(72, 44);
   arduboy.print("Cmdr6-");
-  arduboy.print(playerValues[selectionPlayer][5]);
+  arduboy.print(playerValues[selectionPlayer][SEL_COMMANDER6]);
 
   arduboy.setCursor(12, 54);
   arduboy.print("Cmdr7-");
-  arduboy.print(playerValues[selectionPlayer][6]);
+  arduboy.print(playerValues[selectionPlayer][SEL_COMMANDER7]);
 
   arduboy.setCursor(72, 54);
   arduboy.print("Cmdr8-");
-  arduboy.print(playerValues[selectionPlayer][7]);
+  arduboy.print(playerValues[selectionPlayer][SEL_COMMANDER8]);
 
   //21x8 characters
   //=======================
@@ -209,28 +222,28 @@ void draw() {
 
     switch (selectionValue) {
       case SEL_LIFE :
-        arduboy.setCursor(6, 20);
+        arduboy.setCursor(6, 14);
         break;
       case SEL_POISON :
-        arduboy.setCursor(66, 20);
+        arduboy.setCursor(66, 14);
         break;
       case SEL_COMMANDER1 :
-        arduboy.setCursor(6, 30);
+        arduboy.setCursor(6, 24);
         break;
       case SEL_COMMANDER2 :
-        arduboy.setCursor(66, 30);
+        arduboy.setCursor(66, 24);
         break;
       case SEL_COMMANDER3 :
-        arduboy.setCursor(6, 38);
+        arduboy.setCursor(6, 34);
         break;
       case SEL_COMMANDER4 :
-        arduboy.setCursor(66, 38);
+        arduboy.setCursor(66, 34);
         break;
       case SEL_COMMANDER5 :
-        arduboy.setCursor(6, 46);
+        arduboy.setCursor(6, 44);
         break;
       case SEL_COMMANDER6 :
-        arduboy.setCursor(66, 46);
+        arduboy.setCursor(66, 44);
         break;
       case SEL_COMMANDER7 :
         arduboy.setCursor(6, 54);
@@ -240,8 +253,46 @@ void draw() {
         break;
     } //state
     arduboy.print(">");
+  }
+
+  if (state == ENTRYSELECTION) {
+
+    switch (selectionValue) {
+      case SEL_LIFE :
+        arduboy.setCursor(0, 14);
+        break;
+      case SEL_POISON :
+        arduboy.setCursor(60, 14);
+        break;
+      case SEL_COMMANDER1 :
+        arduboy.setCursor(0, 24);
+        break;
+      case SEL_COMMANDER2 :
+        arduboy.setCursor(60, 24);
+        break;
+      case SEL_COMMANDER3 :
+        arduboy.setCursor(0, 34);
+        break;
+      case SEL_COMMANDER4 :
+        arduboy.setCursor(60, 34);
+        break;
+      case SEL_COMMANDER5 :
+        arduboy.setCursor(0, 44);
+        break;
+      case SEL_COMMANDER6 :
+        arduboy.setCursor(60, 44);
+        break;
+      case SEL_COMMANDER7 :
+        arduboy.setCursor(0, 54);
+        break;
+      case SEL_COMMANDER8 :
+        arduboy.setCursor(60, 54);
+        break;
+    } //state
+    arduboy.print(">>");
 
   }
+
 
 }
 
@@ -297,15 +348,7 @@ void up() {
 
   switch (state) {
     case PLAYERSELECTION :
-      if (selectionPlayer == SEL_PLAYER5) {
-        selectionPlayer = SEL_PLAYER1;
-      } else  if (selectionPlayer == SEL_PLAYER6) {
-        selectionPlayer = SEL_PLAYER2;
-      } else if (selectionPlayer == SEL_PLAYER7) {
-        selectionPlayer = SEL_PLAYER3;
-      } else if (selectionPlayer == SEL_PLAYER8) {
-        selectionPlayer = SEL_PLAYER4;
-      }
+      
       break;
 
     case VALUESELECTION :
@@ -328,6 +371,15 @@ void up() {
       }
 
       break;
+      
+    case ENTRYSELECTION :
+      if (playerValues[selectionPlayer][selectionValue] = 999) {
+        playerValues[selectionPlayer][selectionValue] = 999;
+      } else {
+        playerValues[selectionPlayer][selectionValue]++;
+      }
+
+      break;
   } //state
 
 }
@@ -336,15 +388,6 @@ void down() {
 
   switch (state) {
     case PLAYERSELECTION :
-      if (selectionPlayer == SEL_PLAYER1) {
-        selectionPlayer = SEL_PLAYER5;
-      } else if (selectionPlayer == SEL_PLAYER2) {
-        selectionPlayer = SEL_PLAYER6;
-      } else if (selectionPlayer == SEL_PLAYER3) {
-        selectionPlayer = SEL_PLAYER7;
-      } else if (selectionPlayer == SEL_PLAYER4) {
-        selectionPlayer = SEL_PLAYER8;
-      }
 
       break;
       
@@ -368,6 +411,15 @@ void down() {
       }
 
       break;
+      
+    case ENTRYSELECTION :
+      if (playerValues[selectionPlayer][selectionValue] <= 1) {
+        playerValues[selectionPlayer][selectionValue] = 0;
+      } else {
+        playerValues[selectionPlayer][selectionValue]--;
+      }
+      
+      break;
 
   } //state
 
@@ -383,6 +435,8 @@ void left() {
         selectionPlayer = SEL_PLAYER2;
       } else if (selectionPlayer == SEL_PLAYER4) {
         selectionPlayer = SEL_PLAYER3;
+      } else if (selectionPlayer == SEL_PLAYER5) {
+        selectionPlayer = SEL_PLAYER4;
       } else if (selectionPlayer == SEL_PLAYER6) {
         selectionPlayer = SEL_PLAYER5;
       } else if (selectionPlayer == SEL_PLAYER7) {
@@ -407,6 +461,15 @@ void left() {
       }
 
       break;
+      
+    case ENTRYSELECTION :
+      if (playerValues[selectionPlayer][selectionValue] <= 5) {
+        playerValues[selectionPlayer][selectionValue] = 0;
+      } else {
+        playerValues[selectionPlayer][selectionValue] = playerValues[selectionPlayer][selectionValue] - 5;
+      }
+
+      break;
 
   } //state
 
@@ -422,6 +485,8 @@ void right() {
         selectionPlayer = SEL_PLAYER3;
       } else if (selectionPlayer == SEL_PLAYER3) {
         selectionPlayer = SEL_PLAYER4;
+      } else if (selectionPlayer == SEL_PLAYER4) {
+        selectionPlayer = SEL_PLAYER5;
       } else if (selectionPlayer == SEL_PLAYER5) {
         selectionPlayer = SEL_PLAYER6;
       } else if (selectionPlayer == SEL_PLAYER6) {
@@ -446,6 +511,15 @@ void right() {
       }
 
       break;
+      
+    case ENTRYSELECTION :
+      if (playerValues[selectionPlayer][selectionValue] + 5 > 999) {
+        playerValues[selectionPlayer][selectionValue] = 999;
+      } else {
+        playerValues[selectionPlayer][selectionValue] = playerValues[selectionPlayer][selectionValue] + 5;
+      }
+      
+      break;
 
   } //state
 
@@ -458,7 +532,7 @@ void a() {
       state = VALUESELECTION;
       break;
     case VALUESELECTION :
-
+      state = ENTRYSELECTION;
       break;
 
   } //state
@@ -468,11 +542,11 @@ void a() {
 void b() {
 
   switch (state) {
-    case PLAYERSELECTION :
-      //
-      break;
     case VALUESELECTION :
       state = PLAYERSELECTION;
+      break;
+    case ENTRYSELECTION :
+      state = VALUESELECTION;
       break;
 
   } //state
